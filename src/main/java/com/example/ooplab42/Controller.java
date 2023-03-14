@@ -1,6 +1,5 @@
 package com.example.ooplab42;
 
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +49,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initSpinners();
         initModel();
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("saves.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("saves.txt"))) {
             model.deserialize(bufferedReader.readLine());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -131,11 +130,12 @@ public class Controller implements Initializable {
         cSlider.setValue(C);
         cTextBox.setText(C.toString());
     }
+
     public void save(ActionEvent actionEvent) throws IOException {
         File file = new File("saves.txt");
-        if(file.exists()) file.delete();
+        if (file.exists()) file.delete();
         file.createNewFile();
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             bw.write(model.serialize());
         }
     }

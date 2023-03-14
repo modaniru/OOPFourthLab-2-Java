@@ -1,7 +1,5 @@
 package com.example.ooplab42;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class Model {
@@ -22,36 +20,34 @@ public class Model {
     private Consumer<Integer> eventHandlerB;
     private Consumer<Integer> eventHandlerC;
 
-    public void setA(Integer newA){
-        if(newA > C){
+    public void setA(Integer newA) {
+        if (newA > C) {
             setC(newA);
         }
-        if(newA > B){
+        if (newA > B) {
             setB(newA);
         }
         A = newA;
         eventHandlerA.accept(A);
     }
 
-    public void setC(Integer newC){
-        if(newC < A){
+    public void setC(Integer newC) {
+        if (newC < A) {
             setA(newC);
         }
-        if(newC < B){
+        if (newC < B) {
             setB(newC);
         }
         C = newC;
         eventHandlerC.accept(C);
     }
 
-    public void setB(Integer newB){
-        if(newB < A){
+    public void setB(Integer newB) {
+        if (newB < A) {
             B = A;
-        }
-        else if(newB > C){
+        } else if (newB > C) {
             B = C;
-        }
-        else{
+        } else {
             B = newB;
         }
         eventHandlerB.accept(B);
@@ -69,13 +65,13 @@ public class Model {
         this.eventHandlerC = eventHandlerC;
     }
 
-    public String serialize(){
+    public String serialize() {
         StringBuilder sb = new StringBuilder();
         sb.append(A).append(" ").append(B).append(" ").append(C);
         return sb.toString();
     }
 
-    public void deserialize(String s){
+    public void deserialize(String s) {
         String[] s1 = s.split(" ");
         setC(Integer.parseInt(s1[2]));
         setB(Integer.parseInt(s1[1]));

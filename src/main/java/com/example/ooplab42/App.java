@@ -2,16 +2,11 @@ package com.example.ooplab42;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Spinner;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.lang.ref.PhantomReference;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 
 public class App extends Application {
     private Controller controller;
@@ -25,7 +20,7 @@ public class App extends Application {
         stage.setTitle("ООП Лабораторная 4.2");
         stage.setScene(scene);
         stage.show();
-        stage.setOnCloseRequest(e ->{
+        stage.setOnCloseRequest(e -> {
 
             Platform.exit();
         });
