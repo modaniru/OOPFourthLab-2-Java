@@ -4,12 +4,45 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ooplab42.Controller">
    <children>
-      <Slider fx:id="slider" layoutX="220.0" layoutY="200.0" prefHeight="16.0" prefWidth="160.0" />
-      <TextField fx:id="textBox1" layoutX="220.0" layoutY="135.0" />
-      <Spinner fx:id="spinner" layoutX="220.0" layoutY="168.0" />
+      <Slider fx:id="aSlider" layoutX="14.0" layoutY="279.0" prefHeight="16.0" prefWidth="160.0" />
+      <TextField fx:id="aTextBox" layoutX="14.0" layoutY="214.0" onAction="#aTextFieldEntered" />
+      <Spinner fx:id="aSpinner" layoutX="14.0" layoutY="247.0" />
+      <Slider fx:id="bSlider" layoutX="220.0" layoutY="279.0" prefHeight="16.0" prefWidth="160.0" />
+      <TextField fx:id="bTextBox" layoutX="220.0" layoutY="214.0" onAction="#bTextFieldEntered" />
+      <Spinner fx:id="bSpinner" layoutX="220.0" layoutY="247.0" />
+      <Slider fx:id="cSlider" layoutX="426.0" layoutY="279.0" prefHeight="16.0" prefWidth="160.0" />
+      <TextField fx:id="cTextBox" layoutX="426.0" layoutY="214.0" onAction="#cTextFieldEntered" />
+      <Spinner fx:id="cSpinner" layoutX="426.0" layoutY="247.0" />
+      <Text fx:id="aText" layoutX="82.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
+      <Text fx:id="bText" layoutX="288.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
+      <Text fx:id="cText" layoutX="494.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
+      <Text layoutX="175.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;=">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
+      <Text layoutX="380.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;=">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
