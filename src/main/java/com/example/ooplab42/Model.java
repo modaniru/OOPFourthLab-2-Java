@@ -1,11 +1,22 @@
 package com.example.ooplab42;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class Model {
     private int A;
     private int B;
     private int C;
+
+    public Model(int a, int b, int c) {
+        A = a;
+        B = b;
+        C = c;
+    }
+
+    public Model() {
+    }
 
     private Consumer<Integer> eventHandlerA;
     private Consumer<Integer> eventHandlerB;
@@ -56,5 +67,18 @@ public class Model {
 
     public void setEventHandlerC(Consumer<Integer> eventHandlerC) {
         this.eventHandlerC = eventHandlerC;
+    }
+
+    public String serialize(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(A).append(" ").append(B).append(" ").append(C);
+        return sb.toString();
+    }
+
+    public void deserialize(String s){
+        String[] s1 = s.split(" ");
+        setC(Integer.parseInt(s1[2]));
+        setB(Integer.parseInt(s1[1]));
+        setA(Integer.parseInt(s1[0]));
     }
 }

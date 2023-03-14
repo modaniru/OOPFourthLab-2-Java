@@ -1,5 +1,7 @@
 package com.example.ooplab42;
 
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,7 +11,10 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -40,72 +45,99 @@ public class Controller implements Initializable {
 
     private Model model;
 
+    //initialize methods
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //initialize numeric
         initSpinners();
-        //init model change events
+        initModel();
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("saves.txt"))) {
+            model.deserialize(bufferedReader.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        initChangeValueListeners();
+    }
+
+    //init spinners
+    private void initSpinners() {
+        aSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
+        bSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
+        cSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
+    }
+
+    //init model
+    public void initModel() {
         model = new Model();
         model.setEventHandlerA(this::changeA);
         model.setEventHandlerB(this::changeB);
         model.setEventHandlerC(this::changeC);
-        //
-        aSpinner.valueProperty().addListener(((observableValue, integer, t1) -> {
-            model.setA(t1);
-        }));
-        bSpinner.valueProperty().addListener(((observableValue, integer, t1) -> {
-            model.setB(t1);
-        }));
-        cSpinner.valueProperty().addListener(((observableValue, integer, t1) -> {
-            model.setC(t1);
-        }));
-        aSlider.valueProperty().addListener(((observableValue, number, t1) -> {
-            model.setA(t1.intValue());
-        }));
-        bSlider.valueProperty().addListener(((observableValue, number, t1) -> {
-            model.setB(t1.intValue());
-        }));
-        cSlider.valueProperty().addListener(((observableValue, number, t1) -> {
-            model.setC(t1.intValue());
-        }));
     }
 
+    //init change value listeners
+    public void initChangeValueListeners() {
+        aSpinner.valueProperty().addListener(this::aViewChange);
+        bSpinner.valueProperty().addListener(this::bViewChange);
+        cSpinner.valueProperty().addListener(this::cViewChange);
+        aSlider.valueProperty().addListener(this::aViewChange);
+        bSlider.valueProperty().addListener(this::bViewChange);
+        cSlider.valueProperty().addListener(this::cViewChange);
+    }
 
-    public void aTextFieldEntered(ActionEvent actionEvent){
+    //Если изменяется какая-нибудь вьюха числа A
+    private void aViewChange(ObservableValue<? extends Number> o, Number oldValue, Number newValue) {
+        model.setA(newValue.intValue());
+    }
+
+    //Если изменяется какая-нибудь вьюха числа B
+    private void bViewChange(ObservableValue<? extends Number> o, Number oldValue, Number newValue) {
+        model.setB(newValue.intValue());
+    }
+
+    //Если изменяется какая-нибудь вьюха числа C
+    private void cViewChange(ObservableValue<? extends Number> o, Number oldValue, Number newValue) {
+        model.setC(newValue.intValue());
+    }
+
+    public void aTextFieldEntered(ActionEvent actionEvent) {
         model.setA(Integer.parseInt(aTextBox.getText()));
     }
 
-    public void bTextFieldEntered(ActionEvent actionEvent){
+    public void bTextFieldEntered(ActionEvent actionEvent) {
         model.setB(Integer.parseInt(bTextBox.getText()));
     }
 
-    public void cTextFieldEntered(ActionEvent actionEvent){
+    public void cTextFieldEntered(ActionEvent actionEvent) {
         model.setC(Integer.parseInt(cTextBox.getText()));
     }
-    private void changeA(Integer A){
+
+    //model change events init
+    private void changeA(Integer A) {
         aText.setText(A.toString());
         aSpinner.getValueFactory().setValue(A);
         aSlider.setValue(A);
         aTextBox.setText(A.toString());
     }
 
-    private void changeB(Integer B){
+    private void changeB(Integer B) {
         bText.setText(B.toString());
         bSpinner.getValueFactory().setValue(B);
         bSlider.setValue(B);
         bTextBox.setText(B.toString());
     }
 
-    private void changeC(Integer C){
+    private void changeC(Integer C) {
         cText.setText(C.toString());
         cSpinner.getValueFactory().setValue(C);
         cSlider.setValue(C);
         cTextBox.setText(C.toString());
     }
-
-    private void initSpinners(){
-        aSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
-        bSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
-        cSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100));
+    public void save(ActionEvent actionEvent) throws IOException {
+        File file = new File("saves.txt");
+        if(file.exists()) file.delete();
+        file.createNewFile();
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(model.serialize());
+        }
     }
+
 }

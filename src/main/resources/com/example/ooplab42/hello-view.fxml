@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
@@ -44,5 +45,6 @@
             <Font size="37.0" />
          </font>
       </Text>
+      <Button layoutX="532.0" layoutY="360.0" mnemonicParsing="false" onAction="#save" text="Save" />
    </children>
 </AnchorPane>
