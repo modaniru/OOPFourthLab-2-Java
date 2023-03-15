@@ -1,48 +1,49 @@
 package com.example.ooplab42;
 
-import java.util.function.Consumer;
+import java.io.*;
+import java.nio.file.Path;
 
 public class Model {
     private int A;
     private int B;
     private int C;
 
-    public Model(int a, int b, int c) {
-        A = a;
-        B = b;
-        C = c;
+    private final int MAX_VALUE = 100;
+    private final int MIN_VALUE = 0;
+    private Path filePath;
+
+    public Model(String path) {
+        filePath = Path.of(path);
     }
 
-    public Model() {
-    }
-
-    private Consumer<Integer> eventHandlerA;
-    private Consumer<Integer> eventHandlerB;
-    private Consumer<Integer> eventHandlerC;
+    private Functional<Integer> eventHandler;
 
     public void setA(Integer newA) {
+        newA = checkValueBound(newA);
         if (newA > C) {
-            setC(newA);
+            C = newA;
         }
         if (newA > B) {
-            setB(newA);
+            B = newA;
         }
         A = newA;
-        eventHandlerA.accept(A);
+        eventHandler.accept(A, B, C);
     }
 
     public void setC(Integer newC) {
+        newC = checkValueBound(newC);
         if (newC < A) {
-            setA(newC);
+            A = newC;
         }
         if (newC < B) {
-            setB(newC);
+            B = newC;
         }
         C = newC;
-        eventHandlerC.accept(C);
+        eventHandler.accept(A, B, C);
     }
 
     public void setB(Integer newB) {
+        newB = checkValueBound(newB);
         if (newB < A) {
             B = A;
         } else if (newB > C) {
@@ -50,28 +51,46 @@ public class Model {
         } else {
             B = newB;
         }
-        eventHandlerB.accept(B);
+        eventHandler.accept(A, B, C);
     }
 
-    public void setEventHandlerA(Consumer<Integer> eventHandlerA) {
-        this.eventHandlerA = eventHandlerA;
+    public void setEventHandler(Functional<Integer> eventHandler) {
+        this.eventHandler = eventHandler;
     }
 
-    public void setEventHandlerB(Consumer<Integer> eventHandlerB) {
-        this.eventHandlerB = eventHandlerB;
+    private int checkValueBound(Integer num){
+        if(num > MAX_VALUE) return 100;
+        if(num < MIN_VALUE) return 0;
+        return num;
     }
 
-    public void setEventHandlerC(Consumer<Integer> eventHandlerC) {
-        this.eventHandlerC = eventHandlerC;
+    public void save(){
+        File file = new File(filePath.toString());
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(serialize());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String serialize() {
+    public void load(){
+        File file = new File(filePath.toString());
+        if(file.exists()){
+            try(BufferedReader br = new BufferedReader(new FileReader(file))){
+                deserialize(br.readLine());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private String serialize() {
         StringBuilder sb = new StringBuilder();
         sb.append(A).append(" ").append(B).append(" ").append(C);
         return sb.toString();
     }
 
-    public void deserialize(String s) {
+    private void deserialize(String s) {
         String[] s1 = s.split(" ");
         setC(Integer.parseInt(s1[2]));
         setB(Integer.parseInt(s1[1]));
